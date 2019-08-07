@@ -1,0 +1,911 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="BDPuntoVentaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Catalogo">
+          <Key>
+            <PropertyRef Name="Id_Producto" />
+          </Key>
+          <Property Name="Id_Producto" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre_Producto" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Id_Categoria" Type="int" Nullable="false" />
+          <Property Name="Precio_Costo" Type="money" Nullable="false" />
+          <Property Name="Ganancia" Type="decimal" Precision="6" Scale="2" />
+          <Property Name="Precio_Venta" Type="money" Nullable="false" />
+          <Property Name="Unidad" Type="varchar" MaxLength="15" />
+          <Property Name="Codigo" Type="varchar" MaxLength="34" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="Categoria">
+          <Key>
+            <PropertyRef Name="Id_Categoria" />
+          </Key>
+          <Property Name="Id_Categoria" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre_Categoria" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Codigo" Type="varchar" MaxLength="34" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="Inventario">
+          <Key>
+            <PropertyRef Name="Id_Producto" />
+          </Key>
+          <Property Name="Id_Producto" Type="int" Nullable="false" />
+          <Property Name="Cantidad" Type="decimal" Precision="8" Scale="3" />
+        </EntityType>
+        <EntityType Name="Empleados">
+          <Key>
+            <PropertyRef Name="Id_Empleado" />
+          </Key>
+          <Property Name="Id_Empleado" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Usuario" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Contraseña" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="Nombre_Completo" Type="varchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Clientes">
+          <Key>
+            <PropertyRef Name="Id_Cliente" />
+          </Key>
+          <Property Name="Id_Cliente" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre_Cliente" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Direccion" Type="varchar" MaxLength="50" />
+          <Property Name="Telefono" Type="varchar" MaxLength="30" />
+          <Property Name="Credito" Type="money" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Venta">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Total" Type="decimal" Precision="8" Scale="2" Nullable="false" />
+          <Property Name="Fecha_Venta" Type="datetime" Nullable="false" />
+          <Property Name="Id_Cliente" Type="int" />
+          <Property Name="Id_Empleado" Type="int" />
+          <Property Name="Iva" Type="decimal" Precision="8" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Venta_Producto">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VentaId" Type="int" Nullable="false" />
+          <Property Name="ProductoId" Type="int" Nullable="false" />
+          <Property Name="Cantidad" Type="int" Nullable="false" />
+          <Property Name="TotalVendido" Type="decimal" Precision="8" Scale="2" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'BDPuntoVenta.Productos.V_Inventario' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="V_Inventario">
+          <Key>
+            <PropertyRef Name="Producto" />
+          </Key>
+          <Property Name="Producto" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Cantidad" Type="decimal" Precision="8" Scale="3" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'BDPuntoVenta.Productos.V_Productos' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="V_Productos">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Nombre" />
+            <PropertyRef Name="Categoria" />
+            
+            
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Unidad" Type="varchar" MaxLength="15" />
+          <Property Name="Categoria" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Precio de Costo" Type="money" Nullable="false" />
+          <Property Name="Ganancia" Type="decimal" Precision="6" Scale="2" />
+          <Property Name="Precio de Venta" Type="money" Nullable="false" />
+          <Property Name="Cantidad" Type="decimal" Precision="8" Scale="3" />
+        </EntityType>
+        <Association Name="FK__Venta__Id_Client__31EC6D26">
+          <End Role="Clientes" Type="Self.Clientes" Multiplicity="0..1" />
+          <End Role="Venta" Type="Self.Venta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clientes">
+              <PropertyRef Name="Id_Cliente" />
+            </Principal>
+            <Dependent Role="Venta">
+              <PropertyRef Name="Id_Cliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Venta__Id_Emplea__32E0915F">
+          <End Role="Empleados" Type="Self.Empleados" Multiplicity="0..1" />
+          <End Role="Venta" Type="Self.Venta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Empleados">
+              <PropertyRef Name="Id_Empleado" />
+            </Principal>
+            <Dependent Role="Venta">
+              <PropertyRef Name="Id_Empleado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Venta_Pro__Produ__36B12243">
+          <End Role="Catalogo" Type="Self.Catalogo" Multiplicity="1" />
+          <End Role="Venta_Producto" Type="Self.Venta_Producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Catalogo">
+              <PropertyRef Name="Id_Producto" />
+            </Principal>
+            <Dependent Role="Venta_Producto">
+              <PropertyRef Name="ProductoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Venta_Pro__Venta__35BCFE0A">
+          <End Role="Venta" Type="Self.Venta" Multiplicity="1" />
+          <End Role="Venta_Producto" Type="Self.Venta_Producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Venta">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Venta_Producto">
+              <PropertyRef Name="VentaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKCategoria">
+          <End Role="Categoria" Type="Self.Categoria" Multiplicity="1" />
+          <End Role="Catalogo" Type="Self.Catalogo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categoria">
+              <PropertyRef Name="Id_Categoria" />
+            </Principal>
+            <Dependent Role="Catalogo">
+              <PropertyRef Name="Id_Categoria" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FkInventario">
+          <End Role="Catalogo" Type="Self.Catalogo" Multiplicity="1" />
+          <End Role="Inventario" Type="Self.Inventario" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Catalogo">
+              <PropertyRef Name="Id_Producto" />
+            </Principal>
+            <Dependent Role="Inventario">
+              <PropertyRef Name="Id_Producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="CatalogoBuscar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Productos">
+          <Parameter Name="NombreBuscado" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="CatalogoEditar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Productos">
+          <Parameter Name="Id_Producto" Type="int" Mode="In" />
+          <Parameter Name="NombreProducto" Type="varchar" Mode="In" />
+          <Parameter Name="NombreCategoria" Type="varchar" Mode="In" />
+          <Parameter Name="Unidad" Type="varchar" Mode="In" />
+          <Parameter Name="PrecioCosto" Type="money" Mode="In" />
+          <Parameter Name="Ganancia" Type="decimal" Mode="In" />
+          <Parameter Name="PrecioVenta" Type="money" Mode="In" />
+          <Parameter Name="Cantidad" Type="decimal" Mode="In" />
+        </Function>
+        <Function Name="CatalogoEliminar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Productos">
+          <Parameter Name="Id_Producto" Type="int" Mode="In" />
+        </Function>
+        <Function Name="CatalogoInsertar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Productos">
+          <Parameter Name="NombreProducto" Type="varchar" Mode="In" />
+          <Parameter Name="NombreCategoria" Type="varchar" Mode="In" />
+          <Parameter Name="Unidad" Type="varchar" Mode="In" />
+          <Parameter Name="PrecioCosto" Type="money" Mode="In" />
+          <Parameter Name="Ganancia" Type="decimal" Mode="In" />
+          <Parameter Name="PrecioVenta" Type="money" Mode="In" />
+          <Parameter Name="Cantidad" Type="decimal" Mode="In" />
+        </Function>
+        <Function Name="CategoriaBuscar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Productos">
+          <Parameter Name="NombreBuscado" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="CategoriaEditar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Productos">
+          <Parameter Name="NombreCategoria" Type="varchar" Mode="In" />
+          <Parameter Name="NuevoNombreCategoria" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="CategoriaEliminar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Productos">
+          <Parameter Name="NombreCategoria" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="CategoriaInsertar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Productos">
+          <Parameter Name="NombreCategoria" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="CategoriaListar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Productos" />
+        <Function Name="CategoriaListarCB" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Productos" />
+        <Function Name="InventarioBuscar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Productos">
+          <Parameter Name="NombreBuscado" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="InventarioListar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Productos" />
+        <Function Name="InventarioModificar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Productos">
+          <Parameter Name="NombreProducto" Type="varchar" Mode="In" />
+          <Parameter Name="Cantidad" Type="decimal" Mode="In" />
+        </Function>
+        <Function Name="MostrarProductos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Productos">
+          <Parameter Name="RegistrosPorPagina" Type="int" Mode="In" />
+          <Parameter Name="NumeroPagina" Type="int" Mode="In" />
+        </Function>
+        <Function Name="ProductosPaginas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Productos">
+          <Parameter Name="RegistrosPorPagina" Type="int" Mode="In" />
+          <Parameter Name="TotalPaginas" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="ListarUsuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="RecursosHumanos" />
+        <Function Name="BuscarCliente" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Ventas">
+          <Parameter Name="NombreBuscado" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="EditarClientes" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Ventas">
+          <Parameter Name="NombreClienteAntes" Type="varchar" Mode="In" />
+          <Parameter Name="NombreClientes" Type="varchar" Mode="In" />
+          <Parameter Name="Direccion" Type="varchar" Mode="In" />
+          <Parameter Name="Telefono" Type="varchar" Mode="In" />
+          <Parameter Name="Credito" Type="money" Mode="In" />
+        </Function>
+        <Function Name="Insertar_Venta_Producto" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Ventas">
+          <Parameter Name="ProductoId" Type="int" Mode="In" />
+          <Parameter Name="VentaId" Type="int" Mode="In" />
+          <Parameter Name="TotalVendido" Type="decimal" Mode="In" />
+          <Parameter Name="Cantidad" Type="int" Mode="In" />
+          <Parameter Name="Id" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="InsertarClientes" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Ventas">
+          <Parameter Name="NombreClientes" Type="varchar" Mode="In" />
+          <Parameter Name="Direccion" Type="varchar" Mode="In" />
+          <Parameter Name="Telefono" Type="varchar" Mode="In" />
+          <Parameter Name="Credito" Type="money" Mode="In" />
+        </Function>
+        <Function Name="InsertarVenta" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Ventas">
+          <Parameter Name="Total" Type="decimal" Mode="In" />
+          <Parameter Name="Fecha_Venta" Type="datetime" Mode="In" />
+          <Parameter Name="Client_Id" Type="int" Mode="In" />
+          <Parameter Name="Vendendor_Id" Type="int" Mode="In" />
+          <Parameter Name="Iva" Type="decimal" Mode="In" />
+          <Parameter Name="Id" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="ListarClientes" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Ventas" />
+        <EntityContainer Name="BDPuntoVentaModelStoreContainer">
+          <EntitySet Name="Catalogo" EntityType="Self.Catalogo" Schema="Productos" store:Type="Tables" />
+          <EntitySet Name="Categoria" EntityType="Self.Categoria" Schema="Productos" store:Type="Tables" />
+          <EntitySet Name="Inventario" EntityType="Self.Inventario" Schema="Productos" store:Type="Tables" />
+          <EntitySet Name="Empleados" EntityType="Self.Empleados" Schema="RecursosHumanos" store:Type="Tables" />
+          <EntitySet Name="Clientes" EntityType="Self.Clientes" Schema="Ventas" store:Type="Tables" />
+          <EntitySet Name="Venta" EntityType="Self.Venta" Schema="Ventas" store:Type="Tables" />
+          <EntitySet Name="Venta_Producto" EntityType="Self.Venta_Producto" Schema="Ventas" store:Type="Tables" />
+          <EntitySet Name="V_Inventario" EntityType="Self.V_Inventario" store:Type="Views" store:Schema="Productos">
+            <DefiningQuery>SELECT 
+    [V_Inventario].[Producto] AS [Producto], 
+    [V_Inventario].[Cantidad] AS [Cantidad]
+    FROM [Productos].[V_Inventario] AS [V_Inventario]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="V_Productos" EntityType="Self.V_Productos" store:Type="Views" store:Schema="Productos">
+            <DefiningQuery>SELECT 
+    [V_Productos].[ID] AS [ID], 
+    [V_Productos].[Nombre] AS [Nombre], 
+    [V_Productos].[Unidad] AS [Unidad], 
+    [V_Productos].[Categoria] AS [Categoria], 
+    [V_Productos].[Precio de Costo] AS [Precio de Costo], 
+    [V_Productos].[Ganancia] AS [Ganancia], 
+    [V_Productos].[Precio de Venta] AS [Precio de Venta], 
+    [V_Productos].[Cantidad] AS [Cantidad]
+    FROM [Productos].[V_Productos] AS [V_Productos]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK__Venta__Id_Client__31EC6D26" Association="Self.FK__Venta__Id_Client__31EC6D26">
+            <End Role="Clientes" EntitySet="Clientes" />
+            <End Role="Venta" EntitySet="Venta" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Venta__Id_Emplea__32E0915F" Association="Self.FK__Venta__Id_Emplea__32E0915F">
+            <End Role="Empleados" EntitySet="Empleados" />
+            <End Role="Venta" EntitySet="Venta" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Venta_Pro__Produ__36B12243" Association="Self.FK__Venta_Pro__Produ__36B12243">
+            <End Role="Catalogo" EntitySet="Catalogo" />
+            <End Role="Venta_Producto" EntitySet="Venta_Producto" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Venta_Pro__Venta__35BCFE0A" Association="Self.FK__Venta_Pro__Venta__35BCFE0A">
+            <End Role="Venta" EntitySet="Venta" />
+            <End Role="Venta_Producto" EntitySet="Venta_Producto" />
+          </AssociationSet>
+          <AssociationSet Name="FKCategoria" Association="Self.FKCategoria">
+            <End Role="Categoria" EntitySet="Categoria" />
+            <End Role="Catalogo" EntitySet="Catalogo" />
+          </AssociationSet>
+          <AssociationSet Name="FkInventario" Association="Self.FkInventario">
+            <End Role="Catalogo" EntitySet="Catalogo" />
+            <End Role="Inventario" EntitySet="Inventario" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BDPuntoVentaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Catalogo">
+          <Key>
+            <PropertyRef Name="Id_Producto" />
+          </Key>
+          <Property Name="Id_Producto" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre_Producto" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Id_Categoria" Type="Int32" Nullable="false" />
+          <Property Name="Precio_Costo" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="Ganancia" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="Precio_Venta" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="Unidad" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Codigo" Type="String" MaxLength="34" FixedLength="false" Unicode="false" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="Venta_Producto" Relationship="Self.FK__Venta_Pro__Produ__36B12243" FromRole="Catalogo" ToRole="Venta_Producto" />
+          <NavigationProperty Name="Categoria" Relationship="Self.FKCategoria" FromRole="Catalogo" ToRole="Categoria" />
+          <NavigationProperty Name="Inventario" Relationship="Self.FkInventario" FromRole="Catalogo" ToRole="Inventario" />
+        </EntityType>
+        <EntityType Name="Categoria">
+          <Key>
+            <PropertyRef Name="Id_Categoria" />
+          </Key>
+          <Property Name="Id_Categoria" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre_Categoria" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Codigo" Type="String" MaxLength="34" FixedLength="false" Unicode="false" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="Catalogo" Relationship="Self.FKCategoria" FromRole="Categoria" ToRole="Catalogo" />
+        </EntityType>
+        <EntityType Name="Inventario">
+          <Key>
+            <PropertyRef Name="Id_Producto" />
+          </Key>
+          <Property Name="Id_Producto" Type="Int32" Nullable="false" />
+          <Property Name="Cantidad" Type="Decimal" Precision="8" Scale="3" />
+          <NavigationProperty Name="Catalogo" Relationship="Self.FkInventario" FromRole="Inventario" ToRole="Catalogo" />
+        </EntityType>
+        <EntityType Name="Empleado">
+          <Key>
+            <PropertyRef Name="Id_Empleado" />
+          </Key>
+          <Property Name="Id_Empleado" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Usuario" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Contraseña" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Nombre_Completo" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Ventas" Relationship="Self.FK__Venta__Id_Emplea__32E0915F" FromRole="Empleados" ToRole="Venta" />
+        </EntityType>
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="Id_Cliente" />
+          </Key>
+          <Property Name="Id_Cliente" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre_Cliente" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Direccion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Telefono" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Credito" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <NavigationProperty Name="Ventas" Relationship="Self.FK__Venta__Id_Client__31EC6D26" FromRole="Clientes" ToRole="Venta" />
+        </EntityType>
+        <EntityType Name="Venta">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Total" Type="Decimal" Precision="8" Scale="2" Nullable="false" />
+          <Property Name="Fecha_Venta" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Id_Cliente" Type="Int32" />
+          <Property Name="Id_Empleado" Type="Int32" />
+          <Property Name="Iva" Type="Decimal" Precision="8" Scale="2" Nullable="false" />
+          <NavigationProperty Name="Empleado" Relationship="Self.FK__Venta__Id_Emplea__32E0915F" FromRole="Venta" ToRole="Empleados" />
+          <NavigationProperty Name="Cliente" Relationship="Self.FK__Venta__Id_Client__31EC6D26" FromRole="Venta" ToRole="Clientes" />
+          <NavigationProperty Name="Venta_Producto" Relationship="Self.FK__Venta_Pro__Venta__35BCFE0A" FromRole="Venta" ToRole="Venta_Producto" />
+        </EntityType>
+        <EntityType Name="Venta_Producto">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VentaId" Type="Int32" Nullable="false" />
+          <Property Name="ProductoId" Type="Int32" Nullable="false" />
+          <Property Name="Cantidad" Type="Int32" Nullable="false" />
+          <Property Name="TotalVendido" Type="Decimal" Precision="8" Scale="2" Nullable="false" />
+          <NavigationProperty Name="Catalogo" Relationship="Self.FK__Venta_Pro__Produ__36B12243" FromRole="Venta_Producto" ToRole="Catalogo" />
+          <NavigationProperty Name="Venta" Relationship="Self.FK__Venta_Pro__Venta__35BCFE0A" FromRole="Venta_Producto" ToRole="Venta" />
+        </EntityType>
+        <EntityType Name="V_Inventario">
+          <Key>
+            <PropertyRef Name="Producto" />
+          </Key>
+          <Property Name="Producto" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Cantidad" Type="Decimal" Precision="8" Scale="3" />
+        </EntityType>
+        <EntityType Name="V_Productos">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Nombre" />
+            <PropertyRef Name="Categoria" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Unidad" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Categoria" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Precio_de_Costo" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="Ganancia" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="Precio_de_Venta" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="Cantidad" Type="Decimal" Precision="8" Scale="3" />
+        </EntityType>
+        <Association Name="FK__Venta_Pro__Produ__36B12243">
+          <End Role="Catalogo" Type="Self.Catalogo" Multiplicity="1" />
+          <End Role="Venta_Producto" Type="Self.Venta_Producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Catalogo">
+              <PropertyRef Name="Id_Producto" />
+            </Principal>
+            <Dependent Role="Venta_Producto">
+              <PropertyRef Name="ProductoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FKCategoria">
+          <End Role="Categoria" Type="Self.Categoria" Multiplicity="1" />
+          <End Role="Catalogo" Type="Self.Catalogo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categoria">
+              <PropertyRef Name="Id_Categoria" />
+            </Principal>
+            <Dependent Role="Catalogo">
+              <PropertyRef Name="Id_Categoria" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FkInventario">
+          <End Role="Catalogo" Type="Self.Catalogo" Multiplicity="1" />
+          <End Role="Inventario" Type="Self.Inventario" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Catalogo">
+              <PropertyRef Name="Id_Producto" />
+            </Principal>
+            <Dependent Role="Inventario">
+              <PropertyRef Name="Id_Producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Venta__Id_Emplea__32E0915F">
+          <End Role="Empleados" Type="Self.Empleado" Multiplicity="0..1" />
+          <End Role="Venta" Type="Self.Venta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Empleados">
+              <PropertyRef Name="Id_Empleado" />
+            </Principal>
+            <Dependent Role="Venta">
+              <PropertyRef Name="Id_Empleado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Venta__Id_Client__31EC6D26">
+          <End Role="Clientes" Type="Self.Cliente" Multiplicity="0..1" />
+          <End Role="Venta" Type="Self.Venta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clientes">
+              <PropertyRef Name="Id_Cliente" />
+            </Principal>
+            <Dependent Role="Venta">
+              <PropertyRef Name="Id_Cliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Venta_Pro__Venta__35BCFE0A">
+          <End Role="Venta" Type="Self.Venta" Multiplicity="1" />
+          <End Role="Venta_Producto" Type="Self.Venta_Producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Venta">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Venta_Producto">
+              <PropertyRef Name="VentaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BDPuntoVentaEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Catalogos" EntityType="Self.Catalogo" />
+          <EntitySet Name="Categorias" EntityType="Self.Categoria" />
+          <EntitySet Name="Inventarios" EntityType="Self.Inventario" />
+          <EntitySet Name="Empleados" EntityType="Self.Empleado" />
+          <EntitySet Name="Clientes" EntityType="Self.Cliente" />
+          <EntitySet Name="Ventas" EntityType="Self.Venta" />
+          <EntitySet Name="Venta_Producto" EntityType="Self.Venta_Producto" />
+          <EntitySet Name="V_Inventario" EntityType="Self.V_Inventario" />
+          <EntitySet Name="V_Productos" EntityType="Self.V_Productos" />
+          <AssociationSet Name="FK__Venta_Pro__Produ__36B12243" Association="Self.FK__Venta_Pro__Produ__36B12243">
+            <End Role="Catalogo" EntitySet="Catalogos" />
+            <End Role="Venta_Producto" EntitySet="Venta_Producto" />
+          </AssociationSet>
+          <AssociationSet Name="FKCategoria" Association="Self.FKCategoria">
+            <End Role="Categoria" EntitySet="Categorias" />
+            <End Role="Catalogo" EntitySet="Catalogos" />
+          </AssociationSet>
+          <AssociationSet Name="FkInventario" Association="Self.FkInventario">
+            <End Role="Catalogo" EntitySet="Catalogos" />
+            <End Role="Inventario" EntitySet="Inventarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Venta__Id_Emplea__32E0915F" Association="Self.FK__Venta__Id_Emplea__32E0915F">
+            <End Role="Empleados" EntitySet="Empleados" />
+            <End Role="Venta" EntitySet="Ventas" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Venta__Id_Client__31EC6D26" Association="Self.FK__Venta__Id_Client__31EC6D26">
+            <End Role="Clientes" EntitySet="Clientes" />
+            <End Role="Venta" EntitySet="Ventas" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Venta_Pro__Venta__35BCFE0A" Association="Self.FK__Venta_Pro__Venta__35BCFE0A">
+            <End Role="Venta" EntitySet="Ventas" />
+            <End Role="Venta_Producto" EntitySet="Venta_Producto" />
+          </AssociationSet>
+          <FunctionImport Name="CatalogoBuscar" ReturnType="Collection(BDPuntoVentaModel.CatalogoBuscar_Result)">
+          <Parameter Name="NombreBuscado" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="CatalogoEditar" ReturnType="Collection(BDPuntoVentaModel.CatalogoEditar_Result)">
+            <Parameter Name="Id_Producto" Mode="In" Type="Int32" />
+            <Parameter Name="NombreProducto" Mode="In" Type="String" />
+            <Parameter Name="NombreCategoria" Mode="In" Type="String" />
+            <Parameter Name="Unidad" Mode="In" Type="String" />
+            <Parameter Name="PrecioCosto" Mode="In" Type="Decimal" />
+            <Parameter Name="Ganancia" Mode="In" Type="Decimal" />
+            <Parameter Name="PrecioVenta" Mode="In" Type="Decimal" />
+            <Parameter Name="Cantidad" Mode="In" Type="Decimal" />
+          </FunctionImport>
+          <FunctionImport Name="CatalogoEliminar">
+          <Parameter Name="Id_Producto" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="CatalogoInsertar">
+            <Parameter Name="NombreProducto" Mode="In" Type="String" />
+            <Parameter Name="NombreCategoria" Mode="In" Type="String" />
+            <Parameter Name="Unidad" Mode="In" Type="String" />
+            <Parameter Name="PrecioCosto" Mode="In" Type="Decimal" />
+            <Parameter Name="Ganancia" Mode="In" Type="Decimal" />
+            <Parameter Name="PrecioVenta" Mode="In" Type="Decimal" />
+            <Parameter Name="Cantidad" Mode="In" Type="Decimal" />
+          </FunctionImport>
+          <FunctionImport Name="CategoriaBuscar" ReturnType="Collection(String)">
+          <Parameter Name="NombreBuscado" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="CategoriaEditar">
+            <Parameter Name="NombreCategoria" Mode="In" Type="String" />
+            <Parameter Name="NuevoNombreCategoria" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="CategoriaEliminar">
+          <Parameter Name="NombreCategoria" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="CategoriaInsertar">
+          <Parameter Name="NombreCategoria" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="CategoriaListar" ReturnType="Collection(String)" />
+          <FunctionImport Name="CategoriaListarCB" ReturnType="Collection(BDPuntoVentaModel.CategoriaListarCB_Result)" />
+          <FunctionImport Name="InventarioBuscar" ReturnType="Collection(BDPuntoVentaModel.InventarioBuscar_Result)">
+          <Parameter Name="NombreBuscado" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="InventarioListar" ReturnType="Collection(BDPuntoVentaModel.InventarioListar_Result)" />
+          <FunctionImport Name="InventarioModificar">
+            <Parameter Name="NombreProducto" Mode="In" Type="String" />
+            <Parameter Name="Cantidad" Mode="In" Type="Decimal" />
+          </FunctionImport>
+          <FunctionImport Name="MostrarProductos" ReturnType="Collection(BDPuntoVentaModel.MostrarProductos_Result)">
+            <Parameter Name="RegistrosPorPagina" Mode="In" Type="Int32" />
+            <Parameter Name="NumeroPagina" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="ProductosPaginas">
+            <Parameter Name="RegistrosPorPagina" Mode="In" Type="Int32" />
+            <Parameter Name="TotalPaginas" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="ListarUsuario" ReturnType="Collection(BDPuntoVentaModel.ListarUsuario_Result)" />
+          <FunctionImport Name="Insertar_Venta_Producto">
+            <Parameter Name="ProductoId" Mode="In" Type="Int32" />
+            <Parameter Name="VentaId" Mode="In" Type="Int32" />
+            <Parameter Name="TotalVendido" Mode="In" Type="Decimal" />
+            <Parameter Name="Cantidad" Mode="In" Type="Int32" />
+            <Parameter Name="Id" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="InsertarVenta">
+            <Parameter Name="Total" Mode="In" Type="Decimal" />
+            <Parameter Name="Fecha_Venta" Mode="In" Type="DateTime" />
+            <Parameter Name="Client_Id" Mode="In" Type="Int32" />
+            <Parameter Name="Vendendor_Id" Mode="In" Type="Int32" />
+            <Parameter Name="Iva" Mode="In" Type="Decimal" />
+            <Parameter Name="Id" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="BuscarCliente" ReturnType="Collection(BDPuntoVentaModel.BuscarCliente_Result)">
+          <Parameter Name="NombreBuscado" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="EditarClientes">
+            <Parameter Name="NombreClienteAntes" Mode="In" Type="String" />
+            <Parameter Name="NombreClientes" Mode="In" Type="String" />
+            <Parameter Name="Direccion" Mode="In" Type="String" />
+            <Parameter Name="Telefono" Mode="In" Type="String" />
+            <Parameter Name="Credito" Mode="In" Type="Decimal" />
+          </FunctionImport>
+          <FunctionImport Name="InsertarClientes">
+            <Parameter Name="NombreClientes" Mode="In" Type="String" />
+            <Parameter Name="Direccion" Mode="In" Type="String" />
+            <Parameter Name="Telefono" Mode="In" Type="String" />
+            <Parameter Name="Credito" Mode="In" Type="Decimal" />
+          </FunctionImport>
+          <FunctionImport Name="ListarClientes" ReturnType="Collection(BDPuntoVentaModel.ListarClientes_Result)" />
+        </EntityContainer>
+        <ComplexType Name="CatalogoBuscar_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Categoria" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="Unidad" Nullable="true" MaxLength="15" />
+          <Property Type="Decimal" Name="Precio_de_Costo" Nullable="true" Precision="19" />
+          <Property Type="Decimal" Name="Ganancia" Nullable="true" Precision="6" Scale="2" />
+          <Property Type="Decimal" Name="Precio_de_Venta" Nullable="true" Precision="19" />
+          <Property Type="Decimal" Name="Cantidad" Nullable="true" Precision="8" Scale="3" />
+        </ComplexType>
+        <ComplexType Name="CatalogoEditar_Result">
+          <Property Type="Int32" Name="Id_Producto" Nullable="false" />
+          <Property Type="String" Name="Nombre_Producto" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="Id_Categoria" Nullable="false" />
+          <Property Type="Decimal" Name="Precio_Costo" Nullable="true" Precision="19" />
+          <Property Type="Decimal" Name="Ganancia" Nullable="true" Precision="6" Scale="2" />
+          <Property Type="Decimal" Name="Precio_Venta" Nullable="true" Precision="19" />
+          <Property Type="String" Name="Unidad" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="Codigo" Nullable="true" MaxLength="34" />
+        </ComplexType>
+        <ComplexType Name="CategoriaListarCB_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Categorias" Nullable="false" MaxLength="30" />
+        </ComplexType>
+        <ComplexType Name="InventarioBuscar_Result">
+          <Property Type="String" Name="Producto" Nullable="false" MaxLength="50" />
+          <Property Type="Decimal" Name="Cantidad" Nullable="true" Precision="8" Scale="3" />
+        </ComplexType>
+        <ComplexType Name="InventarioListar_Result">
+          <Property Type="String" Name="Producto" Nullable="false" MaxLength="50" />
+          <Property Type="Decimal" Name="Cantidad" Nullable="true" Precision="8" Scale="3" />
+        </ComplexType>
+        <ComplexType Name="MostrarProductos_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Unidad" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="Categoria" Nullable="false" MaxLength="30" />
+          <Property Type="Decimal" Name="Precio_de_Costo" Nullable="true" Precision="19" />
+          <Property Type="Decimal" Name="Ganancia" Nullable="true" Precision="6" Scale="2" />
+          <Property Type="Decimal" Name="Precio_de_Venta" Nullable="true" Precision="19" />
+          <Property Type="Decimal" Name="Cantidad" Nullable="true" Precision="8" Scale="3" />
+        </ComplexType>
+        <ComplexType Name="ListarUsuario_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Usuario" Nullable="false" MaxLength="15" />
+          <Property Type="String" Name="Contraseña" Nullable="false" MaxLength="30" />
+        </ComplexType>
+        <ComplexType Name="BuscarCliente_Result">
+          <Property Type="String" Name="Nombre_Cliente" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Direccion" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Telefono" Nullable="true" MaxLength="30" />
+          <Property Type="Decimal" Name="Credito" Nullable="false" Precision="19" />
+        </ComplexType>
+        <ComplexType Name="ListarClientes_Result">
+          <Property Type="String" Name="Cliente" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Direccion" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Telefono" Nullable="true" MaxLength="30" />
+          <Property Type="Decimal" Name="Limite_Crédito" Nullable="false" Precision="19" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BDPuntoVentaModelStoreContainer" CdmEntityContainer="BDPuntoVentaEntities">
+          <EntitySetMapping Name="Catalogos">
+            <EntityTypeMapping TypeName="BDPuntoVentaModel.Catalogo">
+              <MappingFragment StoreEntitySet="Catalogo">
+                <ScalarProperty Name="Id_Producto" ColumnName="Id_Producto" />
+                <ScalarProperty Name="Nombre_Producto" ColumnName="Nombre_Producto" />
+                <ScalarProperty Name="Id_Categoria" ColumnName="Id_Categoria" />
+                <ScalarProperty Name="Precio_Costo" ColumnName="Precio_Costo" />
+                <ScalarProperty Name="Ganancia" ColumnName="Ganancia" />
+                <ScalarProperty Name="Precio_Venta" ColumnName="Precio_Venta" />
+                <ScalarProperty Name="Unidad" ColumnName="Unidad" />
+                <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categorias">
+            <EntityTypeMapping TypeName="BDPuntoVentaModel.Categoria">
+              <MappingFragment StoreEntitySet="Categoria">
+                <ScalarProperty Name="Id_Categoria" ColumnName="Id_Categoria" />
+                <ScalarProperty Name="Nombre_Categoria" ColumnName="Nombre_Categoria" />
+                <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Inventarios">
+            <EntityTypeMapping TypeName="BDPuntoVentaModel.Inventario">
+              <MappingFragment StoreEntitySet="Inventario">
+                <ScalarProperty Name="Id_Producto" ColumnName="Id_Producto" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Empleados">
+            <EntityTypeMapping TypeName="BDPuntoVentaModel.Empleado">
+              <MappingFragment StoreEntitySet="Empleados">
+                <ScalarProperty Name="Id_Empleado" ColumnName="Id_Empleado" />
+                <ScalarProperty Name="Usuario" ColumnName="Usuario" />
+                <ScalarProperty Name="Contraseña" ColumnName="Contraseña" />
+                <ScalarProperty Name="Nombre_Completo" ColumnName="Nombre_Completo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Clientes">
+            <EntityTypeMapping TypeName="BDPuntoVentaModel.Cliente">
+              <MappingFragment StoreEntitySet="Clientes">
+                <ScalarProperty Name="Id_Cliente" ColumnName="Id_Cliente" />
+                <ScalarProperty Name="Nombre_Cliente" ColumnName="Nombre_Cliente" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="Credito" ColumnName="Credito" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ventas">
+            <EntityTypeMapping TypeName="BDPuntoVentaModel.Venta">
+              <MappingFragment StoreEntitySet="Venta">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="Fecha_Venta" ColumnName="Fecha_Venta" />
+                <ScalarProperty Name="Id_Cliente" ColumnName="Id_Cliente" />
+                <ScalarProperty Name="Id_Empleado" ColumnName="Id_Empleado" />
+                <ScalarProperty Name="Iva" ColumnName="Iva" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Venta_Producto">
+            <EntityTypeMapping TypeName="BDPuntoVentaModel.Venta_Producto">
+              <MappingFragment StoreEntitySet="Venta_Producto">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="VentaId" ColumnName="VentaId" />
+                <ScalarProperty Name="ProductoId" ColumnName="ProductoId" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+                <ScalarProperty Name="TotalVendido" ColumnName="TotalVendido" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="V_Inventario">
+            <EntityTypeMapping TypeName="BDPuntoVentaModel.V_Inventario">
+              <MappingFragment StoreEntitySet="V_Inventario">
+                <ScalarProperty Name="Producto" ColumnName="Producto" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="V_Productos">
+            <EntityTypeMapping TypeName="BDPuntoVentaModel.V_Productos">
+              <MappingFragment StoreEntitySet="V_Productos">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Unidad" ColumnName="Unidad" />
+                <ScalarProperty Name="Categoria" ColumnName="Categoria" />
+                <ScalarProperty Name="Precio_de_Costo" ColumnName="Precio de Costo" />
+                <ScalarProperty Name="Ganancia" ColumnName="Ganancia" />
+                <ScalarProperty Name="Precio_de_Venta" ColumnName="Precio de Venta" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="CatalogoBuscar" FunctionName="BDPuntoVentaModel.Store.CatalogoBuscar">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BDPuntoVentaModel.CatalogoBuscar_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Categoria" ColumnName="Categoria" />
+                <ScalarProperty Name="Unidad" ColumnName="Unidad" />
+                <ScalarProperty Name="Precio_de_Costo" ColumnName="Precio de Costo" />
+                <ScalarProperty Name="Ganancia" ColumnName="Ganancia" />
+                <ScalarProperty Name="Precio_de_Venta" ColumnName="Precio de Venta" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="CatalogoEditar" FunctionName="BDPuntoVentaModel.Store.CatalogoEditar">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BDPuntoVentaModel.CatalogoEditar_Result">
+                <ScalarProperty Name="Id_Producto" ColumnName="Id_Producto" />
+                <ScalarProperty Name="Nombre_Producto" ColumnName="Nombre_Producto" />
+                <ScalarProperty Name="Id_Categoria" ColumnName="Id_Categoria" />
+                <ScalarProperty Name="Precio_Costo" ColumnName="Precio_Costo" />
+                <ScalarProperty Name="Ganancia" ColumnName="Ganancia" />
+                <ScalarProperty Name="Precio_Venta" ColumnName="Precio_Venta" />
+                <ScalarProperty Name="Unidad" ColumnName="Unidad" />
+                <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="CatalogoEliminar" FunctionName="BDPuntoVentaModel.Store.CatalogoEliminar" />
+          <FunctionImportMapping FunctionImportName="CatalogoInsertar" FunctionName="BDPuntoVentaModel.Store.CatalogoInsertar" />
+          <FunctionImportMapping FunctionImportName="CategoriaBuscar" FunctionName="BDPuntoVentaModel.Store.CategoriaBuscar" />
+          <FunctionImportMapping FunctionImportName="CategoriaEditar" FunctionName="BDPuntoVentaModel.Store.CategoriaEditar" />
+          <FunctionImportMapping FunctionImportName="CategoriaEliminar" FunctionName="BDPuntoVentaModel.Store.CategoriaEliminar" />
+          <FunctionImportMapping FunctionImportName="CategoriaInsertar" FunctionName="BDPuntoVentaModel.Store.CategoriaInsertar" />
+          <FunctionImportMapping FunctionImportName="CategoriaListar" FunctionName="BDPuntoVentaModel.Store.CategoriaListar" />
+          <FunctionImportMapping FunctionImportName="CategoriaListarCB" FunctionName="BDPuntoVentaModel.Store.CategoriaListarCB">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BDPuntoVentaModel.CategoriaListarCB_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Categorias" ColumnName="Categorias" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="InventarioBuscar" FunctionName="BDPuntoVentaModel.Store.InventarioBuscar">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BDPuntoVentaModel.InventarioBuscar_Result">
+                <ScalarProperty Name="Producto" ColumnName="Producto" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="InventarioListar" FunctionName="BDPuntoVentaModel.Store.InventarioListar">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BDPuntoVentaModel.InventarioListar_Result">
+                <ScalarProperty Name="Producto" ColumnName="Producto" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="InventarioModificar" FunctionName="BDPuntoVentaModel.Store.InventarioModificar" />
+          <FunctionImportMapping FunctionImportName="MostrarProductos" FunctionName="BDPuntoVentaModel.Store.MostrarProductos">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BDPuntoVentaModel.MostrarProductos_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Unidad" ColumnName="Unidad" />
+                <ScalarProperty Name="Categoria" ColumnName="Categoria" />
+                <ScalarProperty Name="Precio_de_Costo" ColumnName="Precio de Costo" />
+                <ScalarProperty Name="Ganancia" ColumnName="Ganancia" />
+                <ScalarProperty Name="Precio_de_Venta" ColumnName="Precio de Venta" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="ProductosPaginas" FunctionName="BDPuntoVentaModel.Store.ProductosPaginas" />
+          <FunctionImportMapping FunctionImportName="ListarUsuario" FunctionName="BDPuntoVentaModel.Store.ListarUsuario">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BDPuntoVentaModel.ListarUsuario_Result">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Usuario" ColumnName="Usuario" />
+                <ScalarProperty Name="Contraseña" ColumnName="Contraseña" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Insertar_Venta_Producto" FunctionName="BDPuntoVentaModel.Store.Insertar_Venta_Producto" />
+          <FunctionImportMapping FunctionImportName="InsertarVenta" FunctionName="BDPuntoVentaModel.Store.InsertarVenta" />
+          <FunctionImportMapping FunctionImportName="BuscarCliente" FunctionName="BDPuntoVentaModel.Store.BuscarCliente">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BDPuntoVentaModel.BuscarCliente_Result">
+                <ScalarProperty Name="Nombre_Cliente" ColumnName="Nombre_Cliente" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="Credito" ColumnName="Credito" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="EditarClientes" FunctionName="BDPuntoVentaModel.Store.EditarClientes" />
+          <FunctionImportMapping FunctionImportName="InsertarClientes" FunctionName="BDPuntoVentaModel.Store.InsertarClientes" />
+          <FunctionImportMapping FunctionImportName="ListarClientes" FunctionName="BDPuntoVentaModel.Store.ListarClientes">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BDPuntoVentaModel.ListarClientes_Result">
+                <ScalarProperty Name="Cliente" ColumnName="Cliente" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="Limite_Crédito" ColumnName="Limite Crédito" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
